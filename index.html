@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>גלגל"צ LIVE - הרשמת אמנים</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0d0620 0%, #1a0535 50%, #0d1a40 100%);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      direction: rtl;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(180,100,255,0.3);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    .header { text-align: center; margin-bottom: 2rem; }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #c060ff, #ff60c0, #60c0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .subtitle { color: #aaa; font-size: 14px; }
+    .field { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; color: #ccc; margin-bottom: 6px; }
+    input[type=text], input[type=email], input[type=url] {
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(180,100,255,0.35);
+      border-radius: 8px;
+      font-size: 14px;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input::placeholder { color: #666; }
+    input:focus { border-color: #c060ff; }
+    input[readonly] { background: rgba(255,255,255,0.03); color: #888; }
+    .id-row { display: none; }
+    .id-wrap { display: flex; gap: 8px; align-items: center; }
+    .id-check { font-size: 20px; flex-shrink: 0; }
+    .declaration {
+      background: rgba(180,100,255,0.08);
+      border: 1px solid rgba(180,100,255,0.2);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin: 8px 0 16px;
+    }
+    .declaration p { font-size: 13px; font-weight: 600; color: #c060ff; margin-bottom: 8px; }
+    .declaration .text { font-size: 12px; color: #bbb; line-height: 1.8; margin-bottom: 12px; }
+    .checkbox-row { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+    .checkbox-row input { margin-top: 3px; flex-shrink: 0; accent-color: #c060ff; }
+    .checkbox-row span { font-size: 12px; color: #ccc; }
+    button {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(90deg, #8b20ff, #ff20a0);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 8px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.85; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #msg { font-size: 13px; text-align: center; margin-top: 12px; min-height: 20px; }
+    .success { color: #60ffb0; }
+    .error { color: #ff6080; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="glive.jpg" alt="גלגל&quot;צ LIVE" style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 2px solid rgba(180,100,255,0.5);" />
+      <h1>הרשמת אמנים לפלייליסט</h1>
+      <p class="subtitle">מלאו את הפרטים הבאים להגשת מועמדות לפלייליסט גלגל"צ LIVE</p>
+    </div>
+
+    <div class="field">
+      <label>שם מלא *</label>
+      <input type="text" id="fullname" placeholder="שם פרטי ושם משפחה" />
+    </div>
+
+    <div class="field">
+      <label>שם במה *</label>
+      <input type="text" id="stagename" placeholder="השם שבו אתה/ת מוכר/ת כאמן/ית" />
+    </div>
+
+    <div class="field">
+      <label>כתובת מייל *</label>
+      <input type="email" id="email" placeholder="your@email.com" />
+    </div>
+
+    <div class="field">
+      <label>קישור לדף האמן בספוטיפיי *</label>
+      <input type="url" id="spotify" placeholder="https://open.spotify.com/artist/..." oninput="extractId(this.value)" />
+    </div>
+
+    <div class="field id-row" id="id-row">
+      <label>מזהה אמן בספוטיפיי (נחלץ אוטומטית)</label>
+      <div class="id-wrap">
+        <input type="text" id="artist-id" readonly />
+        <span class="id-check" id="id-check"></span>
+      </div>
+    </div>
+
+    <div class="declaration">
+      <p>הצהרה והסכמה</p>
+      <div class="text">
+        אני מצהיר/ה כי קראתי והבנתי את התנאים הבאים:<br><br>
+        1. הרשמה זו אינה מהווה התחייבות כלשהי מצד יוצר הפלייליסט לצרף את האמן לפלייליסט הנוכחי או לכל פלייליסט בעתיד.<br><br>
+        2. פרויקט זה הוא חובבני ונמצא בשלב בטא. עשויות להתרחש תקלות טכניות ושיבושים.<br><br>
+        3. לא תהיינה לי או לה כל טענות, תביעות או תלונות כלפי יוצר הפלייליסט בכל הקשור לפרויקט זה.
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" id="agree" />
+        <span>קראתי והסכמתי לכל האמור לעיל *</span>
+      </label>
+    </div>
+
+    <button onclick="submitForm()" id="btn">שלח מועמדות</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxW_VLSCu6dM-DUOXFkGCAzFy6XAIQnm5xW0rTCfeCE9pCmdntJg7aQtwLw2HgCUehdIg/exec';
+
+    function extractId(url) {
+      const match = url.match(/spotify\.com\/artist\/([A-Za-z0-9]+)/);
+      const row = document.getElementById('id-row');
+      const idField = document.getElementById('artist-id');
+      const check = document.getElementById('id-check');
+      if (match) {
+        idField.value = match[1];
+        check.textContent = '✓';
+        check.style.color = '#60ffb0';
+        row.style.display = 'block';
+      } else if (url.length > 10) {
+        idField.value = '';
+        check.textContent = '✗';
+        check.style.color = '#ff6080';
+        row.style.display = 'block';
+      } else {
+        row.style.display = 'none';
+      }
+    }
+
+    async function submitForm() {
+      const name = document.getElementById('fullname').value.trim();
+      const stagename = document.getElementById('stagename').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const spotify = document.getElementById('spotify').value.trim();
+      const artistId = document.getElementById('artist-id').value.trim();
+      const agree = document.getElementById('agree').checked;
+      const msg = document.getElementById('msg');
+      const btn = document.getElementById('btn');
+
+      msg.className = '';
+      if (!name || !stagename || !email || !spotify) {
+        msg.className = 'error'; msg.textContent = 'נא למלא את כל השדות החובה'; return;
+      }
+      if (!email.includes('@')) {
+        msg.className = 'error'; msg.textContent = 'כתובת מייל לא תקינה'; return;
+      }
+      if (!artistId) {
+        msg.className = 'error'; msg.textContent = 'נא להכניס קישור תקין לדף אמן בספוטיפיי'; return;
+      }
+      if (!agree) {
+        msg.className = 'error'; msg.textContent = 'יש לאשר את ההצהרה כדי להמשיך'; return;
+      }
+
+      btn.disabled = true;
+      msg.textContent = 'שולח...';
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({fullname: name, stagename, email, spotify, artistId})
+        });
+        msg.className = 'success';
+        msg.textContent = 'תודה! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.';
+        document.querySelectorAll('input').forEach(i => i.disabled = true);
+      } catch(e) {
+        msg.className = 'error';
+        msg.textContent = 'שגיאה בשליחה, נסה שוב.';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
