@@ -91,7 +91,7 @@
       <img src="glive.jpg" alt="גלגל&quot;צ LIVE" style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 2px solid rgba(180,100,255,0.5);" />
       <h1>הרשמת אמנים לפלייליסט</h1>
       <p class="subtitle">מלאו את הפרטים הבאים להגשת מועמדות לפלייליסט גלגל"צ LIVE</p>
-<a href="https://open.spotify.com/playlist/2sCgMi2KCgRfeqWIdjJNxv" target="_blank" style="color: #c060ff; font-size: 13px;">האזן לפלייליסט ←</a>
+      <a href="https://open.spotify.com/playlist/2sCgMi2KCgRfeqWIdjJNxv" target="_blank" style="color: #c060ff; font-size: 13px;">האזן לפלייליסט ←</a>
     </div>
 
     <div class="field">
@@ -142,7 +142,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzulwF96Jw8sSFCo5MXtZikzfTuGemADUH6E9-bqqaJTlWy_eVcntL290XLkIXeAFdig/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6jn9KD7jumpuzhm_TnrNCBn6_qLfKbcWqyDti6KCpBWPsj_CBczBrmKaaGvXbVakl_w/exec';
 
     function extractId(url) {
       const match = url.match(/spotify\.com\/artist\/([A-Za-z0-9]+)/);
@@ -192,7 +192,7 @@
       msg.textContent = 'שולח...';
 
       try {
-        await fetch(SCRIPT_URL, {
+        const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {'Content-Type': 'application/json'},
