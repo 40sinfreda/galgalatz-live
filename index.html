@@ -192,8 +192,11 @@
   msg.textContent = 'בודק פרטים...';
 
   // בדיקת כפילות דרך doGet
-  try {
-    const check = await fetch(SCRIPT_URL + '?check_email=' + encodeURIComponent(email));
+ try {
+    const check = await fetch(SCRIPT_URL + '?check_email=' + encodeURIComponent(email), {
+      method: 'GET',
+      mode: 'cors'
+    });
     const result = await check.json();
     if (result.exists) {
       msg.className = 'error';
@@ -201,8 +204,9 @@
       btn.disabled = false;
       return;
     }
-  } catch(e) {}
-
+  } catch(e) {
+    // אם הבדיקה נכשלת, ממשיכים בכל זאת
+  }
   msg.textContent = 'שולח...';
 
   try {
