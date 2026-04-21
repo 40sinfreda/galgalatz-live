@@ -165,48 +165,62 @@
     }
 
     async function submitForm() {
-      const name = document.getElementById('fullname').value.trim();
-      const stagename = document.getElementById('stagename').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const spotify = document.getElementById('spotify').value.trim();
-      const artistId = document.getElementById('artist-id').value.trim();
-      const agree = document.getElementById('agree').checked;
-      const msg = document.getElementById('msg');
-      const btn = document.getElementById('btn');
+  const name = document.getElementById('fullname').value.trim();
+  const stagename = document.getElementById('stagename').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const spotify = document.getElementById('spotify').value.trim();
+  const artistId = document.getElementById('artist-id').value.trim();
+  const agree = document.getElementById('agree').checked;
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('btn');
 
-      msg.className = '';
-      if (!name || !stagename || !email || !spotify) {
-        msg.className = 'error'; msg.textContent = 'נא למלא את כל השדות החובה'; return;
-      }
-      if (!email.includes('@')) {
-        msg.className = 'error'; msg.textContent = 'כתובת מייל לא תקינה'; return;
-      }
-      if (!artistId) {
-        msg.className = 'error'; msg.textContent = 'נא להכניס קישור תקין לדף אמן בספוטיפיי'; return;
-      }
-      if (!agree) {
-        msg.className = 'error'; msg.textContent = 'יש לאשר את ההצהרה כדי להמשיך'; return;
-      }
+  msg.className = '';
+  if (!name || !stagename || !email || !spotify) {
+    msg.className = 'error'; msg.textContent = 'נא למלא את כל השדות החובה'; return;
+  }
+  if (!email.includes('@')) {
+    msg.className = 'error'; msg.textContent = 'כתובת מייל לא תקינה'; return;
+  }
+  if (!artistId) {
+    msg.className = 'error'; msg.textContent = 'נא להכניס קישור תקין לדף אמן בספוטיפיי'; return;
+  }
+  if (!agree) {
+    msg.className = 'error'; msg.textContent = 'יש לאשר את ההצהרה כדי להמשיך'; return;
+  }
 
-      btn.disabled = true;
-      msg.textContent = 'שולח...';
+  btn.disabled = true;
+  msg.textContent = 'בודק פרטים...';
 
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({fullname: name, stagename, email, spotify, artistId})
-        });
-        msg.className = 'success';
-        msg.textContent = 'תודה! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.';
-        document.querySelectorAll('input').forEach(i => i.disabled = true);
-      } catch(e) {
-        msg.className = 'error';
-        msg.textContent = 'שגיאה בשליחה, נסה שוב.';
-        btn.disabled = false;
-      }
+  // בדיקת כפילות דרך doGet
+  try {
+    const check = await fetch(SCRIPT_URL + '?check_email=' + encodeURIComponent(email));
+    const result = await check.json();
+    if (result.exists) {
+      msg.className = 'error';
+      msg.textContent = 'מייל זה כבר רשום במערכת.';
+      btn.disabled = false;
+      return;
     }
+  } catch(e) {}
+
+  msg.textContent = 'שולח...';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({fullname: name, stagename, email, spotify, artistId})
+    });
+    msg.className = 'success';
+    msg.textContent = 'תודה! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.';
+    document.querySelectorAll('input').forEach(i => i.disabled = true);
+  } catch(e) {
+    msg.className = 'error';
+    msg.textContent = 'שגיאה בשליחה, נסה שוב.';
+    btn.disabled = false;
+  }
+}
   </script>
 </body>
 </html>
