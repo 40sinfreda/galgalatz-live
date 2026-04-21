@@ -207,23 +207,31 @@
   } catch(e) {
     // אם הבדיקה נכשלת, ממשיכים בכל זאת
   }
-  msg.textContent = 'שולח...';
+  btn.disabled = true;
+msg.textContent = 'שולח...';
 
-  try {
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({fullname: name, stagename, email, spotify, artistId})
-    });
-    msg.className = 'success';
-    msg.textContent = 'תודה! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.';
-    document.querySelectorAll('input').forEach(i => i.disabled = true);
-  } catch(e) {
+try {
+  const response = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain'},
+    body: JSON.stringify({fullname: name, stagename, email, spotify, artistId})
+  });
+  const result = await response.json();
+  
+  if (result.status === 'duplicate') {
     msg.className = 'error';
-    msg.textContent = 'שגיאה בשליחה, נסה שוב.';
+    msg.textContent = 'מייל זה כבר רשום במערכת.';
     btn.disabled = false;
+    return;
   }
+  
+  msg.className = 'success';
+  msg.textContent = 'תודה! הפרטים נשלחו בהצלחה. נחזור אליך בקרוב.';
+  document.querySelectorAll('input').forEach(i => i.disabled = true);
+} catch(e) {
+  msg.className = 'error';
+  msg.textContent = 'שגיאה בשליחה, נסה שוב.';
+  btn.disabled = false;
 }
   </script>
 </body>
