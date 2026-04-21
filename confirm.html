@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>גלגל"צ LIVE - אישור קבלת עדכונים</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+
+  :root {
+    --purple: #a855f7;
+    --purple-dark: #7c3aed;
+    --purple-glow: rgba(168,85,247,0.15);
+    --cyan: #22d3ee;
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --text: #f0eeff;
+    --text-muted: #9090b0;
+    --border: rgba(168,85,247,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(34,211,238,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  header {
+    width: 100%;
+    text-align: center;
+    padding: 2.5rem 1rem 0;
+  }
+  header img {
+    width: min(280px, 80vw);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .container {
+    width: min(560px, 94vw);
+    padding: 2rem 0 4rem;
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--purple-glow);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  /* Info sections */
+  .info-section {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .info-section h3 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--purple);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .info-section p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .info-section ul {
+    list-style: none;
+    margin-top: 0.5rem;
+  }
+
+  .info-section ul li {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 1.5rem 0;
+  }
+
+  /* Confirm section */
+  .confirm-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .confirm-card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .confirm-card p {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+  }
+
+  /* Checkbox */
+  .checkbox-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    cursor: pointer;
+  }
+
+  .checkbox-wrap input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--purple);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  .checkbox-wrap label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    cursor: pointer;
+  }
+
+  /* Button */
+  .btn-confirm {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-confirm:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Spotify button */
+  .btn-spotify {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.85rem;
+    background: #1DB954;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 1rem;
+    transition: opacity 0.2s;
+  }
+  .btn-spotify:hover { opacity: 0.9; }
+
+  /* Messages */
+  .msg {
+    text-align: center;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    display: none;
+  }
+  .msg.error { display: block; background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); color: #ff8080; }
+  .msg.success { display: block; background: rgba(96,255,176,0.1); border: 1px solid rgba(96,255,176,0.3); color: #60ffb0; }
+
+  /* Success state */
+  .success-state {
+    text-align: center;
+    display: none;
+  }
+  .success-state .big-check {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .success-state h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #60ffb0;
+  }
+  .success-state p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="glive.jpg" alt="גלגל״צ LIVE">
+</header>
+
+<div class="container">
+
+  <!-- Info Card -->
+  <div class="card">
+    <div class="card-icon">🎵</div>
+    <h1>ברוכים הבאים לפלייליסט גלגל"צ LIVE</h1>
+    <p class="subtitle">
+      אנחנו שמחים שנרשמת! לפני שנשלח לך עדכונים,<br>
+      קרא/י את המידע החשוב הבא:
+    </p>
+
+    <div class="info-section">
+      <h3>🎙️ מהו הפלייליסט?</h3>
+      <p>פלייליסט ספוטיפיי שמתעדכן אוטומטית 24/7 עם השירים שמנגנים ברדיו גלגל"צ בזמן אמת. הפלייליסט מכיל 200 השירים האחרונים שהושמעו בתחנה — ללא דיבורים וללא פרסומות.</p>
+    </div>
+
+    <div class="info-section">
+      <h3>🔀 איך נבחרים שירי האמנים?</h3>
+      <p>כל כמה שירים מגלגל"צ, הפלייליסט שותל שיר אקראי מאחד האמנים המאושרים. הבחירה מתבצעת:</p>
+      <ul>
+        <li style="list-style:none;">לפי תור מסודר בין האמנים</li>
+        <li style="list-style:none;">אם כל שירי האמן כבר בפלייליסט — עוברים לאמן הבא</li>
+        <li style="list-style:none;">השיר נבחר אקראית מתוך דיסקוגרפיית האמן</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3>📢 איך לעזור לקדם את הפלייליסט?</h3>
+      <ul>
+        <li style="list-style:none;">שמרו את הפלייליסט ועקבו אחריו בספוטיפיי</li>
+        <li style="list-style:none;">שתפו אותו עם חברים, עמיתים ועוקבים ברשתות החברתיות</li>
+        <li style="list-style:none;">הוסיפו אותו לפלייליסטים שלכם</li>
+        <li style="list-style:none;">ספרו לאמנים אחרים על הפרויקט</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Confirm Card -->
+  <div class="confirm-card" id="confirm-section">
+    <h2>✉️ אישור קבלת עדכונים</h2>
+    <p>כדי להמשיך לקבל עדכונים על הפלייליסט והשירים שנוספו — אנא אשר/י:</p>
+
+    <div class="checkbox-wrap">
+      <input type="checkbox" id="agree-updates">
+      <label for="agree-updates">
+        אני מאשר/ת לקבל עדכונים תקופתיים על הפלייליסט, שירים חדשים שנוספו, וחדשות מ-Ignite Records. ניתן לבטל בכל עת.
+      </label>
+    </div>
+
+    <button class="btn-confirm" id="confirm-btn" onclick="confirmSubscription()">
+      אני מאשר/ת — המשיכו לשלוח לי עדכונים
+    </button>
+
+    <div class="msg" id="msg"></div>
+
+    <a href="https://open.spotify.com/playlist/2sCgMi2KCgRfeqWIdjJNxv" target="_blank" class="btn-spotify">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      האזן לפלייליסט בספוטיפיי
+    </a>
+  </div>
+
+  <!-- Success State -->
+  <div class="confirm-card success-state" id="success-section">
+    <div class="big-check">✅</div>
+    <h2>האישור התקבל!</h2>
+    <p>תודה! נשלח לך עדכונים על הפלייליסט.<br>אל תשכח/י לשמור את הפלייליסט ולשתף עם חברים!</p>
+    <a href="https://open.spotify.com/playlist/2sCgMi2KCgRfeqWIdjJNxv" target="_blank" class="btn-spotify">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      פתח את הפלייליסט בספוטיפיי
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Ignite Records &nbsp;·&nbsp; גלגל"צ LIVE Playlist
+</footer>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzulwF96Jw8sSFCo5MXtZikzfTuGemADUH6E9-bqqaJTlWy_eVcntL290XLkIXeAFdig/exec';
+
+async function confirmSubscription() {
+  const agree = document.getElementById('agree-updates').checked;
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('confirm-btn');
+
+  if (!agree) {
+    msg.className = 'error';
+    msg.textContent = 'יש לסמן את תיבת האישור כדי להמשיך';
+    return;
+  }
+
+  btn.disabled = true;
+  msg.className = '';
+  msg.textContent = '';
+
+  // Get email from URL parameter if exists
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get('email') || '';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        action: 'confirm_subscription',
+        email: email,
+        confirmed: true,
+        confirm_date: new Date().toLocaleDateString('he-IL')
+      })
+    });
+
+    // Show success
+    document.getElementById('confirm-section').style.display = 'none';
+    document.getElementById('success-section').style.display = 'block';
+
+  } catch(e) {
+    msg.className = 'error';
+    msg.textContent = 'שגיאה בשליחה, נסה שוב.';
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
